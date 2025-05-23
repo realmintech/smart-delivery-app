@@ -1,2 +1,32 @@
 @import "tailwindcss";
 
+/* Light theme - default colors */
+:root {
+  --background: #ffffff;
+  --text: #1a1a1a;
+  --accent: #537D5D;
+  --card-bg: #ffffff;
+  --card-border: #e5e7eb;
+}
+
+/* Dark theme colors */
+.dark {
+  --background: #1a1a1a;
+  --text: #f3f4f6;
+  --accent: #3a5a40;
+  --card-bg: #2d2d2d;
+  --card-border: #4b5563;
+}
+
+/* Apply the theme variables */
+body {
+  background-color: var(--background);
+  color: var(--text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Example of how to use the variables in other components */
+.card {
+  background-color: var(--card-bg);
+  border-color: var(--card-border);
+}

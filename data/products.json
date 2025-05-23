@@ -1,0 +1,76 @@
+{
+  "yogurtProducts": [
+    {
+      "id": 1,
+      "title": "Greek Yogurt",
+      "creator": "Dr. Culture Queen, Microbiologist",
+      "rating": 4.7,
+      "reviews": 388410,
+      "price": 8900,
+      "originalPrice": 82909,
+      "bestseller": true,
+      "image": "https://images.unsplash.com/photo-1577045058273-9d643f734d6a",
+      "description": "Master artisanal yogurt-making techniques from basic fermentation to advanced flavor infusions"
+    },
+    {
+      "id": 2,
+      "title": "The Complete Fermentation Bootcamp",
+      "creator": "Dr. Culture Queen, Microbiologist",
+      "rating": 4.7,
+      "reviews": 436486,
+      "price": 9900,
+      "originalPrice": 91909,
+      "bestseller": true,
+      "image": "https://images.unsplash.com/photo-1550583724-b2692b85b150",
+      "description": "From milk to masterpiece - transform simple ingredients into probiotic-rich delights"
+    },
+    {
+      "id": 3,
+      "title": "[NEW] Ultimate Plant-Based Yogurt Certification",
+      "creator": "Stephane Ferment | Dairy-Free Expert",
+      "rating": 4.7,
+      "reviews": 248404,
+      "price": 8900,
+      "originalPrice": 91909,
+      "bestseller": true,
+      "image": "https://images.unsplash.com/photo-1509440159596-0249088772ff",
+      "description": "Create luxurious non-dairy yogurts using nuts, oats, and coconut"
+    },
+    {
+      "id": 4,
+      "title": "The Complete Fermentation Bootcamp",
+      "creator": "Dr. Culture Queen, Microbiologist",
+      "rating": 4.7,
+      "reviews": 436486,
+      "price": 9900,
+      "originalPrice": 91909,
+      "bestseller": true,
+      "image": "https://images.unsplash.com/photo-1550583724-b2692b85b150",
+      "description": "From milk to masterpiece - transform simple ingredients into probiotic-rich delights"
+    },
+    {
+      "id": 5,
+      "title": "The Complete Fermentation Bootcamp",
+      "creator": "Dr. Culture Queen, Microbiologist",
+      "rating": 4.7,
+      "reviews": 436486,
+      "price": 9900,
+      "originalPrice": 91909,
+      "bestseller": true,
+      "image": "https://images.unsplash.com/photo-1550583724-b2692b85b150",
+      "description": "From milk to masterpiece - transform simple ingredients into probiotic-rich delights"
+    },
+    {
+      "id": 6,
+      "title": "The Complete Fermentation Bootcamp",
+      "creator": "Dr. Culture Queen, Microbiologist",
+      "rating": 4.7,
+      "reviews": 436486,
+      "price": 9900,
+      "originalPrice": 91909,
+      "bestseller": true,
+      "image": "https://images.unsplash.com/photo-1550583724-b2692b85b150",
+      "description": "From milk to masterpiece - transform simple ingredients into probiotic-rich delights"
+    }
+  ]
+}

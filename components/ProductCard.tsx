@@ -1,103 +1,29 @@
 "use client";
 
 import { useState } from "react";
-import { FaStar, FaCartPlus } from "react-icons/fa";
+import { FaStar, FaReadme } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+import { yogurtProducts } from "../data/products.json";
+
 
 const ProductCard = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const router = useRouter();
 
-  const yogurtProducts = [
-    {
-      id: 1,
-      title: "Greek Yogurt",
-      creator: "Dr. Culture Queen, Microbiologist",
-      rating: 4.7,
-      reviews: 388410,
-      price: 8900,
-      originalPrice: 82909,
-      bestseller: true,
-      image: "https://images.unsplash.com/photo-1577045058273-9d643f734d6a",
-      description:
-        "Master artisanal yogurt-making techniques from basic fermentation to advanced flavor infusions",
-    },
-    {
-      id: 2,
-      title: "The Complete Fermentation Bootcamp",
-      creator: "Dr. Culture Queen, Microbiologist",
-      rating: 4.7,
-      reviews: 436486,
-      price: 9900,
-      originalPrice: 91909,
-      bestseller: true,
-      image: "https://images.unsplash.com/photo-1550583724-b2692b85b150",
-      description:
-        "From milk to masterpiece - transform simple ingredients into probiotic-rich delights",
-    },
-    {
-      id: 3,
-      title: "[NEW] Ultimate Plant-Based Yogurt Certification",
-      creator: "Stephane Ferment | Dairy-Free Expert",
-      rating: 4.7,
-      reviews: 248404,
-      price: 8900,
-      originalPrice: 91909,
-      bestseller: true,
-      image: "https://images.unsplash.com/photo-1509440159596-0249088772ff",
-      description:
-        "Create luxurious non-dairy yogurts using nuts, oats, and coconut",
-    },
-    {
-      id: 4,
-      title: "The Complete Fermentation Bootcamp",
-      creator: "Dr. Culture Queen, Microbiologist",
-      rating: 4.7,
-      reviews: 436486,
-      price: 9900,
-      originalPrice: 91909,
-      bestseller: true,
-      image: "https://images.unsplash.com/photo-1550583724-b2692b85b150",
-      description:
-        "From milk to masterpiece - transform simple ingredients into probiotic-rich delights",
-    },
-    {
-      id: 5,
-      title: "The Complete Fermentation Bootcamp",
-      creator: "Dr. Culture Queen, Microbiologist",
-      rating: 4.7,
-      reviews: 436486,
-      price: 9900,
-      originalPrice: 91909,
-      bestseller: true,
-      image: "https://images.unsplash.com/photo-1550583724-b2692b85b150",
-      description:
-        "From milk to masterpiece - transform simple ingredients into probiotic-rich delights",
-    },
-    {
-      id: 6,
-      title: "The Complete Fermentation Bootcamp",
-      creator: "Dr. Culture Queen, Microbiologist",
-      rating: 4.7,
-      reviews: 436486,
-      price: 9900,
-      originalPrice: 91909,
-      bestseller: true,
-      image: "https://images.unsplash.com/photo-1550583724-b2692b85b150",
-      description:
-        "From milk to masterpiece - transform simple ingredients into probiotic-rich delights",
-    },
-  ];
+  const handleViewDetails = (productId: number) => {
+    router.push(`/products/${productId}`);
+  };
 
   return (
-    <div className=" p-6">
+    <div className="p-6 bg-[var(--card-bg)] border-[var(--card-border)] text-[var(--text)]">
       <h2 className="text-2xl font-bold text-white mb-6">
         Yogurt Crafters are viewing
       </h2>
-
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {yogurtProducts.map((product) => (
           <div
             key={product.id}
-            className="relative bg-white rounded-lg overflow-hidden border border-[#2d2d2d] transition-all duration-300 hover:border-[#537D5D]"
+            className="relative rounded-lg overflow-hidden border border-[#2d2d2d] transition-all duration-300 hover:border-[#537D5D]"
             onMouseEnter={() => setHoveredCard(product.id)}
             onMouseLeave={() => setHoveredCard(null)}
           >
@@ -144,23 +70,23 @@ const ProductCard = () => {
                   ₦{(product.originalPrice / 100).toFixed(2)}
                 </span>
               </div>
-
-              <button className="mt-3 w-full bg-[#537D5D] cursor-pointer hover:bg-[#3a5a40] text-white font-medium py-2 px-4 rounded flex items-center justify-center transition-colors">
-                <FaCartPlus className="mr-2" />
-                Buy Now
+              <button
+                onClick={() => handleViewDetails(product.id)}
+                className="mt-3 w-full bg-[#537D5D] cursor-pointer hover:bg-[#3a5a40] text-white font-medium py-2 px-4 rounded flex items-center justify-center transition-colors"
+              >
+                <FaReadme className="mr-2 text-2xl" />
+                View Details
               </button>
-            </div>
 
-            {/* Hover Tooltip */}
-            {hoveredCard === product.id && (
-              <div className="absolute bottom-20 left-0 right-0 bg-[#1e1e1e] border border-[#537D5D] m-4 p-3 rounded-lg shadow-lg z-10">
-                <h4 className="text-white font-semibold mb-2">
-                  Description
-                </h4>
-                <p className="text-gray-300 text-sm">{product.description}</p>
-                <div className="absolute -bottom-2 left-4 w-4 h-4 bg-[#1e1e1e] border-b border-r border-[#537D5D] transform rotate-45"></div>
-              </div>
-            )}
+              {/* Hover Tooltip */}
+              {hoveredCard === product.id && (
+                <div className="absolute bottom-20 left-0 right-0 bg-[#1e1e1e] border border-[#537D5D] m-4 p-3 rounded-lg shadow-lg z-10">
+                  <h4 className="text-white font-semibold mb-2">Description</h4>
+                  <p className="text-gray-300 text-sm">{product.description}</p>
+                  <div className="absolute -bottom-2 left-4 w-4 h-4 bg-[#1e1e1e] border-b border-r border-[#537D5D] transform rotate-45"></div>
+                </div>
+              )}
+            </div>
           </div>
         ))}
       </div>

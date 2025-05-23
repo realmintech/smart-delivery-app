@@ -64,7 +64,7 @@ export default function AuthForm() {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col lg:flex-row bg-[#121212] text-white">
+    <div className="min-h-screen w-full flex flex-col lg:flex-row bg-[var(--card-bg)] border-[var(--card-border)] text-[var(--text)]">
       <div className="hidden lg:flex flex-1 justify-center items-center bg-[#537D5D]">
         <img
           src="/delivery_headshot.png"

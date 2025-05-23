@@ -19,7 +19,7 @@ const Deliveries = () => {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4">
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-[var(--card-bg)] border-[var(--card-border)] text-[var(--text)]">
       {goods.map((item, idx) => (
         <div key={idx} className="border p-4 rounded shadow-md">
           <img
