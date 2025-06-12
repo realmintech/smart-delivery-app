@@ -1,13 +1,24 @@
 "use client";
 
 import Link from "next/link";
-// import { useAuth } from "@/context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { FaUser, FaSignOutAlt, FaBars, FaTimes } from "react-icons/fa";
 import { useState } from "react";
+import { auth } from "../../config/firebase-config";
+import { signOut } from "firebase/auth";
 
 const Navbar = () => {
-  // const { user } = useAuth();
+  const { user } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      setIsMenuOpen(false);
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
 
   return (
     <nav className="bg-[#121212] text-white border-b border-[#537D5D] sticky top-0 z-50">
@@ -32,26 +43,28 @@ const Navbar = () => {
               Pricing
             </Link>
 
-            {/* {user ? ( */}
-
+            {user ? (
               <div className="flex items-center space-x-4">
                 <span className="flex items-center">
                   <FaUser className="mr-2 text-[#537D5D]" />
-                  {/* {user.email} */}
+                  {user.email}
                 </span>
-                <button className="flex items-center text-red-400 hover:text-red-300">
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center text-red-400 hover:text-red-300 cursor-pointer"
+                >
                   <FaSignOutAlt className="mr-2" />
                   Logout
                 </button>
               </div>
-            {/* ) : ( */}
+            ) : (
               <Link
                 href="/auth"
                 className="bg-[#537D5D] text-black px-4 py-2 rounded hover:bg-[#3a5a40] transition"
               >
                 Login / Register
               </Link>
-            {/* )} */}
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -81,18 +94,21 @@ const Navbar = () => {
               Pricing
             </Link>
 
-            {/* {user ? ( */}
+            {user ? (
               <div className="pt-4 border-t border-[#2d2d2d]">
                 <div className="flex items-center mb-4">
                   <FaUser className="mr-2 text-[#537D5D]" />
-                  {/* {user.email} */}
+                  {user.email}
                 </div>
-                <button className="flex items-center text-red-400 hover:text-red-300">
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center text-red-400 hover:text-red-300"
+                >
                   <FaSignOutAlt className="mr-2" />
                   Logout
                 </button>
               </div>
-            {/* ) : ( */}
+            ) : (
               <Link
                 href="/auth"
                 className="block bg-[#537D5D] text-black text-center py-2 rounded hover:bg-[#3a5a40] transition"
@@ -100,7 +116,7 @@ const Navbar = () => {
               >
                 Login / Register
               </Link>
-            {/* )} */}
+            )}
           </div>
         )}
       </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { auth } from "../../config/firebase-config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { FaEnvelope, FaFacebook, FaGoogle, FaUser } from "react-icons/fa";
@@ -11,15 +12,14 @@ import {
   signInWithFacebook,
 } from "../../config/firebase-auth";
 import PasswordInput from "@/components/PasswordInput";
-// import { db } from "../config/firebase-config"
 
 export default function AuthForm() {
+  const router = useRouter();
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [agree, setAgree] = useState(false);
-  // const [productList, setProductList] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,9 +33,13 @@ export default function AuthForm() {
       if (isLogin) {
         await loginUser(email, password);
         alert("Login successful");
+        router.push("/"); // Redirect to home page after login
       } else {
         await registerUser(email, password);
         alert("Registration successful");
+        setIsLogin(true); // Switch to login form after registration
+        setEmail(""); // Clear form
+        setPassword("");
       }
     } catch (err) {
       alert("Error: " + err.message);
@@ -46,6 +50,7 @@ export default function AuthForm() {
     try {
       await signInWithGoogle();
       alert("Signed in with Google");
+      router.push("/"); // Redirect to home page
     } catch (err) {
       alert("Google sign-in error: " + err.message);
     }
@@ -55,16 +60,15 @@ export default function AuthForm() {
     try {
       await signInWithFacebook();
       alert("Signed in with Facebook");
+      router.push("/"); // Redirect to home page
     } catch (err) {
       alert("Facebook sign-in error: " + err.message);
     }
   };
-  const signin = async () => {
-    await createUserWithEmailAndPassword(auth, email, password);
-  };
 
   return (
     <div className="min-h-screen w-full flex flex-col lg:flex-row bg-[var(--card-bg)] border-[var(--card-border)] text-[var(--text)]">
+      {/* Left side image */}
       <div className="hidden lg:flex flex-1 justify-center items-center bg-[#537D5D]">
         <img
           src="/delivery_headshot.png"
@@ -73,6 +77,7 @@ export default function AuthForm() {
         />
       </div>
 
+      {/* Right side form */}
       <div className="flex-1 flex justify-center items-center p-6">
         <div className="w-full max-w-md space-y-6">
           <h2 className="text-3xl font-bold text-center">
@@ -83,6 +88,7 @@ export default function AuthForm() {
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Form fields remain the same */}
             {!isLogin && (
               <div className="relative">
                 <input
@@ -104,15 +110,17 @@ export default function AuthForm() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-3 bg-[#1e1e1e]  text-white border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-green-950"
+                className="w-full px-4 py-3 bg-[#1e1e1e] text-white border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-green-950"
               />
               <FaEnvelope className="absolute right-3 top-1/2 text-gray-400 hover:text-[#537D5D] h-5 w-5 transform -translate-y-1/2" />
             </div>
+
             <PasswordInput
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
 
+            {/* Checkbox and submit button */}
             <div className="flex items-center justify-between text-sm">
               <label className="flex items-center space-x-2">
                 <input
@@ -131,13 +139,15 @@ export default function AuthForm() {
                 </a>
               )}
             </div>
+
             <button
               type="submit"
-              onClick={signin}
               className="w-full py-3 bg-[#537D5D] text-black font-semibold rounded cursor-pointer hover:bg-[#537D5D]"
             >
               {isLogin ? "Login" : "Register"}
             </button>
+
+            {/* Social login options */}
             <div className="text-center text-sm text-gray-400">
               Or continue with
             </div>
@@ -159,8 +169,10 @@ export default function AuthForm() {
                 Facebook
               </button>
             </div>
+
+            {/* Toggle between login/register */}
             <p className="text-center text-sm mt-4">
-              {isLogin ? "Don’t have an account?" : "Already have an account?"}{" "}
+              {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
               <button
                 type="button"
                 onClick={() => setIsLogin(!isLogin)}
