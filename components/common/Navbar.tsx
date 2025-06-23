@@ -2,14 +2,50 @@
 
 import Link from "next/link";
 import { useAuth } from "../../context/AuthContext";
-import { FaUser, FaSignOutAlt, FaBars, FaTimes } from "react-icons/fa";
-import { useState } from "react";
+import {
+  FaUser,
+  FaSignOutAlt,
+  FaBars,
+  FaTimes,
+  FaShoppingCart,
+} from "react-icons/fa";
+import { useState, useEffect } from "react";
 import { auth } from "../../config/firebase-config";
 import { signOut } from "firebase/auth";
 
 const Navbar = () => {
   const { user } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
+
+  // Custom event name for cart updates
+  const CART_UPDATE_EVENT = "cartUpdated";
+
+  // Calculate total items in cart
+  const getCartCount = () => {
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    return cart.reduce((total, item) => total + item.quantity, 0);
+  };
+
+  // Update cart count and setup event listener
+  useEffect(() => {
+    // Initial load
+    setCartCount(getCartCount());
+
+    // Create event listener for cart updates
+    const handleCartUpdate = () => {
+      setCartCount(getCartCount());
+    };
+
+    // Listen for both custom events and storage events
+    window.addEventListener(CART_UPDATE_EVENT, handleCartUpdate);
+    window.addEventListener("storage", handleCartUpdate);
+
+    return () => {
+      window.removeEventListener(CART_UPDATE_EVENT, handleCartUpdate);
+      window.removeEventListener("storage", handleCartUpdate);
+    };
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -42,6 +78,17 @@ const Navbar = () => {
             <Link href="/pricing" className="hover:text-[#537D5D] transition">
               Pricing
             </Link>
+            <Link
+              href="/cart"
+              className="relative hover:text-[#537D5D] transition"
+            >
+              <FaShoppingCart size={20} />
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-[#537D5D] text-black text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                  {cartCount > 9 ? "9+" : cartCount}
+                </span>
+              )}
+            </Link>
 
             {user ? (
               <div className="flex items-center space-x-4">
@@ -68,12 +115,25 @@ const Navbar = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <button
-            className="md:hidden text-[#537D5D] focus:outline-none"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
-          </button>
+          <div className="md:hidden flex items-center space-x-4">
+            <Link
+              href="/cart"
+              className="relative hover:text-[#537D5D] transition"
+            >
+              <FaShoppingCart size={20} />
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-[#537D5D] text-black text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                  {cartCount > 9 ? "9+" : cartCount}
+                </span>
+              )}
+            </Link>
+            <button
+              className="text-[#537D5D] focus:outline-none"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
@@ -92,6 +152,13 @@ const Navbar = () => {
               onClick={() => setIsMenuOpen(false)}
             >
               Pricing
+            </Link>
+            <Link
+              href="/cart"
+              className="block hover:text-[#537D5D] transition"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Cart ({cartCount > 9 ? "9+" : cartCount})
             </Link>
 
             {user ? (

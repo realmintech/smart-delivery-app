@@ -2,14 +2,55 @@
 
 import { useParams } from "next/navigation";
 import { yogurtProducts } from "../../../data/products.json";
-import { FaStar } from "react-icons/fa";
-
+import { FaStar, FaPlus, FaMinus } from "react-icons/fa";
+import { useEffect, useState } from "react";
 
 export default function ProductDetailPage() {
   const params = useParams();
   const productId = Number(params.id);
+  const [cart, setCart] = useState([]);
+  const [quantity, setQuantity] = useState(1);
 
   const product = yogurtProducts.find((p) => p.id === productId);
+
+  // Load cart from localStorage on component mount
+  useEffect(() => {
+    const savedCart = localStorage.getItem("cart");
+    if (savedCart) {
+      setCart(JSON.parse(savedCart));
+    }
+  }, []);
+
+  const updateCart = (newCart) => {
+    setCart(newCart);
+    localStorage.setItem("cart", JSON.stringify(newCart));
+    window.dispatchEvent(new Event("cartUpdated"));
+  };
+
+  const handleAddToCart = () => {
+    if (!product) return;
+
+    const cartString = localStorage.getItem("cart");
+    const currentCart = cartString ? JSON.parse(cartString) : [];
+    const existingItemIndex = currentCart.findIndex(
+      (item) => item.id === product.id
+    );
+    let updatedCart;
+
+    if (existingItemIndex >= 0) {
+      updatedCart = [...currentCart];
+      updatedCart[existingItemIndex].quantity + quantity;
+    } else {
+      updatedCart = [...currentCart, { ...product, quantity }];
+    }
+
+    updateCart(updatedCart);
+    alert(`${quantity} ${product.title} added to cart!`);
+    setQuantity(1); // Reset quantity after adding
+  };
+
+  const increaseQuantity = () => setQuantity((prev) => Math.min(prev + 1, 99));
+  const decreaseQuantity = () => setQuantity((prev) => Math.max(prev - 1, 1));
 
   if (!product) {
     return <div>Product not found</div>;
@@ -68,9 +109,33 @@ export default function ProductDetailPage() {
               <p className="text-gray-300">{product.description}</p>
             </div>
 
-            <button className="mt-6 w-full bg-[#537D5D] hover:bg-[#3a5a40] text-white font-medium py-3 px-6 rounded transition-colors">
-              Add to Cart
-            </button>
+            {/* Quantity Controls */}
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center border border-gray-600 rounded-md">
+                <button
+                  onClick={decreaseQuantity}
+                  className="px-3 py-1 text-gray-300 hover:bg-gray-700 transition"
+                  disabled={quantity <= 1}
+                >
+                  <FaMinus className="w-3 h-3" />
+                </button>
+                <span className="px-4 py-1 text-center w-12">{quantity}</span>
+                <button
+                  onClick={increaseQuantity}
+                  className="px-3 py-1 text-gray-300 hover:bg-gray-700 transition"
+                  disabled={quantity >= 99}
+                >
+                  <FaPlus className="w-3 h-3" />
+                </button>
+              </div>
+
+              <button
+                onClick={handleAddToCart}
+                className="flex-1 bg-[#537D5D] hover:bg-[#3a5a40] text-white font-medium py-3 px-6 rounded transition-colors"
+              >
+                Add to Cart
+              </button>
+            </div>
           </div>
         </div>
       </div>
